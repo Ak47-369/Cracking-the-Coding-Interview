@@ -1,0 +1,111 @@
+/*
+ Is Unique: Implement an algorithm to determine if a string has all unique characters. What if you 
+cannot use additional data structures? 
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution
+{
+    public:
+    // Approach 1
+    // Bruteforce 
+    // Check for each index (i) whether it exists in in [i+1,n] or not
+    // T.C - O(N^2)
+    // S.C - O(1)
+
+    bool isUnique1(string sequence)
+    {
+        for(int i = 0; i < sequence.length(); i++)
+            for(int j = i+1; j < sequence.length(); j++)
+                if(sequence[i] == sequence[j]) // Duplicate exists
+                    return false;
+        return true;
+    }
+
+    // Approach 2
+    // Using Sorting
+    // If 2 adjacent characters are same - Duplicate exists
+    // T.C - O(N log N)
+    // S.C - O(log N)
+
+    bool isUnique2(string sequence)
+    {
+        sort(sequence.begin(),sequence.end());
+        for(int i = 1; i < sequence.length(); i++)
+            if(sequence[i] == sequence[i-1])
+                return false;
+        return true;
+    }
+
+    // Approach 3
+    // Using Hashet - Record the chars which are already present as you traverse the string
+    // T.C - O(N)
+    // S.C  - O(26)
+
+    bool isUnique3(string sequence)
+    {
+        unordered_set<char> unique_chars;
+        for(char &c : sequence)
+        {
+            if(!unique_chars.count(c))
+                unique_chars.insert(c);
+            else
+                return false; // Already present
+        }
+        return true;
+    }
+
+    // Approach 3 - Variation 
+    // Using count Vector
+
+    // T.C - O(N)
+    // S.C - O(26)
+
+    bool isUnique3a(string sequence)
+    {
+        // Intialize frequecy of each char to 0
+        vector<int> chars_freq(26,0); 
+        for(char &c : sequence)
+        {
+            if(chars_freq[c-'a'] != 0)
+                return false; // Duplicate exists
+            else
+                chars_freq[c-'a']++;
+        }
+        return true;
+    }
+
+    // Approach 3 - Variation
+    // Using Hashmap
+
+    // T.C - O(N)
+    // S.C - O(26)
+
+    bool isUnique3b(string sequence)
+    {
+        unordered_map<char,int> char_freq;
+        for(char &c : sequence)
+        {
+            if(!char_freq.count(c))
+                char_freq[c]++;
+            else 
+                return false;
+        }
+        return true;
+
+    }
+
+};
+
+int main()
+{
+    Solution s;
+    string sequence = "abcdefghyz";
+    cout << s.isUnique1(sequence) << endl;
+    cout << s.isUnique2(sequence) << endl;
+    cout << s.isUnique3(sequence) << endl;
+    cout << s.isUnique3a(sequence) << endl;
+    cout << s.isUnique3b(sequence) << endl;
+}
