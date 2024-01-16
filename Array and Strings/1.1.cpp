@@ -97,15 +97,45 @@ class Solution
 
     }
 
+     // Approach 4 - Very Similar to Approach 3
+    // Using BitManiuplation
+    // Using the fact that for storing the integer we use 32 bits and we need 26 bits
+    // to keep track of  characters which already present
+    // If i th bit is set - means ith char is already present in string
+    // If i th bit is unset - ith char is not present in string
+    // e.g = "abzdc" - count = 10000000000000000000001111
+
+    bool isUnique4(string sequence)
+    {
+        int count = 0; // 0000...32 times
+        for(char &c : sequence)
+        {
+            int index = c -'a';
+        //     int num = pow(2,index); 
+
+        // To represent j (index = 10) 1 >> 9 -> 1000000000
+        // Efficient way of generating num
+            int num = (1 << (index-1));
+        
+            if((count & num) > 0) // index th bit is set - Char is already present
+                return false;
+            else
+                count = (count | num); // Set the index th bit
+        }
+        return true;
+    }
+
+
 };
 
 int main()
 {
     Solution s;
-    string sequence = "abcdefghyz";
+    string sequence = "abcrdefghyz";
     cout << s.isUnique1(sequence) << endl;
     cout << s.isUnique2(sequence) << endl;
     cout << s.isUnique3(sequence) << endl;
     cout << s.isUnique3a(sequence) << endl;
     cout << s.isUnique3b(sequence) << endl;
+    cout << s.isUnique4(sequence) << endl;
 }
