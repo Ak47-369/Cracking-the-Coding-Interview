@@ -77,7 +77,7 @@ class Solution{
         // Approach 3
         // Not using an Extra Space
         // Check for each node → If a node with same value exists in Right of curr node
-        // Mean it's a duplciate → Don't add this to list
+        // Mean it's a duplicate → Don't add this to list
         // If node with same value don't exist  in Right of curr node → It's unique
         // Add it to list
 
@@ -126,6 +126,34 @@ class Solution{
 
         }
 
+        // Approach 3 - Variation
+        // Not using Extra Space
+        // For each node → Insert it into list and delete all it's duplicate from list
+
+        // T.C - O(N^2)
+        // S.C - O(1)
+
+        ListNode* removeDuplicates3(ListNode *head)
+        {
+            ListNode *dummyHead = head;
+            ListNode *prev = head;
+
+            while(prev)
+            {
+                ListNode *curr = prev;
+                // Delete all it's duplicate from list
+                while(curr && curr->next)
+                {
+                    if(curr->next->val == prev->val)
+                        curr->next = curr->next->next;
+                    else
+                        curr = curr->next;
+                }
+                prev = prev->next;
+            }
+            return dummyHead;
+        }
+
         void display (ListNode *head)
         {
             while(head)
@@ -141,7 +169,7 @@ class Solution{
 int main()
 {
     ListNode *list = new ListNode(3);
-    list->next = new ListNode(2);
+    list->next = new ListNode(3);
     list->next->next = new ListNode(3);
     list->next->next->next = new ListNode(2);
     // List = 2→2→3→3
@@ -149,8 +177,9 @@ int main()
     Solution s;
     auto newList = s.removeDuplicates1(list);
     auto newList2 = s.removeDuplicates1(list);
-    auto newList3 = s.removeDuplicates2(list);
+    auto newList3 = s.removeDuplicates3(list);
     
-    // s.display(newList);
+    s.display(newList);
+    s.display(newList2);
     s.display(newList3);
 }
