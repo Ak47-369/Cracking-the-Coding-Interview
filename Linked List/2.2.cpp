@@ -134,6 +134,36 @@ class Solution{
             return node;
         }
 
+        // Approach 4 - Using 2 Pointers
+        // Set 2 pointers first,second , k node apart
+        // Initially first will point to first node and second will point to the kth node 
+        // Traverse the Linkedlist, when second reach the end
+        // first will point to (len - k) th node i.e kth node from last
+
+        // T.C- O(N)
+        // S.C - O(1)
+
+        ListNode *findKthNode4(ListNode *head, int k)
+        {
+            ListNode *first = head;
+            ListNode *second = head;
+
+            // Move second to kth node from start
+            for(int i = 0; i < k; i++)
+                second = second->next;
+            
+            // Now move both first and start
+            while(second)
+            {
+                first = first->next;
+                second = second->next;
+            }
+
+            // Now first will point to the kth node from end
+            return first;
+            
+        }
+
 };
 
 int main()
@@ -149,12 +179,15 @@ int main()
     // ListNode *kthNode = s.findKthNode1(list,4);
     // cout << kthNode->val << endl;
 
-    ListNode *finalNode = s.findKthNode2(list,3);
-    cout << finalNode->val << endl;
+    // ListNode *finalNode = s.findKthNode2(list,3);
+    // cout << finalNode->val << endl;
 
-    int k = 2;
-    ListNode *node = s.findKthNode3(list,k);
-    cout << node->val << endl;
+    int k = 4;
+    // ListNode *node = s.findKthNode3(list,k);
+    // cout << node->val << endl;
+
+    ListNode *n = s.findKthNode4(list,k);
+    cout << n->val;
 
 
 
