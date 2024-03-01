@@ -44,6 +44,35 @@ public:
         first = head;
         return dfs(head);
     }
+    
+    // Approach 1 - Iterative Version
+    // Using Stack
+
+    // T.C - O(N)
+    // S.C - O(N)
+
+    bool isPalindrome_1a(ListNode *head)
+    {
+        stack<int> stackNodes;
+        ListNode *current = head;
+        while(current)
+        {
+            stackNodes.push(current->val);
+            current = current->next;
+        }
+
+        // Now compare starting node and top node of stack
+        current = head;
+        while(!stackNodes.empty())
+        {
+            if(current->val != stackNodes.top())
+                return false;
+            stackNodes.pop();
+            current = current->next;
+        }
+
+        return false;
+    }
 
     // Approach 2
     // Reverse the list + then compare them from start
@@ -161,6 +190,48 @@ public:
         return true;
     }
 
+    // Approach 3
+    // Very similar to Approach 1 Iterativative
+    // Here we are pushing only first n/2 nodes and then comparing the nodes to remaining nodes of list
+    // FolowUp : What if you aren't allowed to calculate the length of Linked List ?
+
+    // Since we only need n/2 elements (Similar to find middle element in a Linked List)
+    // We will use fast and slow pointer - when fast reaches end we will be at middle element 
+    // Push all nodes till middle element
+
+    // T.C - O(N)
+    // S.C - O(N)
+
+    bool isPalindrome3(ListNode *head)
+    {
+        ListNode *slow = head;
+        ListNode *fast = head;
+
+        stack<int> stackNodes;
+
+        while(fast && fast->next)
+        {
+            stackNodes.push(slow->val);
+            slow = slow->next; // Move by 1 node
+            fast = fast->next->next; // Move by 2 nodes
+        }
+
+        // Now slow will point to middle element
+        if(fast) // Linkedlist is of Odd length, skip the middle element (ab c ba we can easily skip c)
+            slow = slow->next;
+        
+        // Compare top of stack and remaining nodes
+        while(!stackNodes.empty())
+        {
+            if(stackNodes.top() != slow->val)
+                return false;
+            slow = slow->next;
+            stackNodes.pop();
+        }
+
+        return true;
+    }
+
 };
 
 int main()
@@ -169,7 +240,10 @@ int main()
     ListNode *first = new ListNode(8);
     first->next = new ListNode(8);
     first->next->next = new ListNode(9);
+    cout << s.isPalindrome_1a(first) << endl;
+    cout << s.isPalindrome3(first) << endl;
     cout << s.isPalindrome(first) << endl;
     cout << s.isPalindrome1(first) << endl;
     cout << s.isPalindrome2(first) << endl;
+
 }
